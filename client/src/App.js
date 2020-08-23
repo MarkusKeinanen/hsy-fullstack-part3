@@ -88,18 +88,26 @@ const App = () => {
 				})
 				.catch((err) => {
 					notify({
-						message: `Failed to update - ${newPerson.name} was not found on server`,
+						message: `Failed to update. Reason: ${err.response.data.error}`,
 						classString: 'error'
 					})
 				})
 		} else {
-			personService.create(newPerson).then((returnedPerson) => {
-				setPersons(persons.concat(returnedPerson))
-				notify({
-					message: `Person added: ${returnedPerson.name} ${returnedPerson.number}`,
-					classString: 'success'
+			personService
+				.create(newPerson)
+				.then((returnedPerson) => {
+					setPersons(persons.concat(returnedPerson))
+					notify({
+						message: `Person added: ${returnedPerson.name} ${returnedPerson.number}`,
+						classString: 'success'
+					})
 				})
-			})
+				.catch((err) => {
+					notify({
+						message: `Failed to add person. Reason: ${err.response.data.error}`,
+						classString: 'error'
+					})
+				})
 		}
 	}
 
